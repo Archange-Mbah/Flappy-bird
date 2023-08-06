@@ -1,31 +1,31 @@
 package logic;
 
+import processing.core.PApplet;
+
 public class Pipe {
-    private float x_coordinate,gapY,pipeWidth,pipeGap;
-    public Pipe(float x, float g, float pw,float pgap){
-        x_coordinate=x;
-        gapY=g;
-        pipeWidth=pw;
-        pipeGap=pgap;
+    private int  pipeWidth,pipeGap,pipeHeight,xCoordinate;
+
+    public Pipe(int pW, int g,int pH,int x){
+        pipeWidth=pW;
+        pipeGap=g;
+        pipeHeight=pH;
+        xCoordinate=x;
     }
 
-    public float getX_coordinate(){
-        return x_coordinate;
+    public int getXCoordinate(){
+        return xCoordinate;
     }
-    public float getGapY(){
-        return gapY;
-    }
-    public float getPipeWidth(){
+    public int getPipeWidth(){
         return pipeWidth;
     }
-    public float getPipeGap(){
+    public int getPipeGap() {
         return pipeGap;
     }
+    public int getPipeHeight() {
+        return pipeHeight;
+    }
 
-    public boolean collission_with_Bird(Bird b){
-        if ((x_coordinate<b.getX_coordinte() && (x_coordinate+pipeWidth>b.getX_coordinte())) &&((b.getY_coordinate()<gapY)||(b.getY_coordinate()>gapY+pipeGap))){
-                return true;
-        } ;
-        return false;
+    public void setXCoordinate(float v) {
+        xCoordinate=(int)v;
     }
 }

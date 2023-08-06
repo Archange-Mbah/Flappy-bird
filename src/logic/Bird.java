@@ -1,44 +1,44 @@
-
 package logic;
+
+import processing.core.PApplet;
+
 public class Bird {
+    private float x, y;
+    private float velocityY;
+    private final float gravity = 0.4f;
+    private final float jumpStrength = -4.0f;
 
-    private float x_coordinte, y_coordinate,velocity_Y;
-    private final  float gravity=10.6f, jumpy_Strength=-6f;
-
-    public Bird(float x, float y){
-         x_coordinte=x;
-         y_coordinate=y;
-         velocity_Y=0;
-    }
-    public float getX_coordinte(){
-        return x_coordinte;
-    }
-    public float getY_coordinate(){
-        return y_coordinate;
-    }
-    public float getVelocity_Y(){
-        return velocity_Y;
+    public Bird(float x, float y) {
+        this.x = x;
+        this.y = y;
+        this.velocityY = 0;
     }
 
-    public float getJumpy_Strength() {
-        return jumpy_Strength;
+    public void update() {
+        velocityY += gravity;
+        y += velocityY;
     }
 
-    public float getGravity(){
-        return gravity;
+    public void jump() {
+        velocityY = jumpStrength;
     }
-    public void upgrade(){
-        velocity_Y+=gravity;
-        y_coordinate+=velocity_Y;
 
-        if (y_coordinate<0){
-            y_coordinate=0;
-            velocity_Y=0;
-        }
+    public float getY() {
+        return y;
     }
-    public void jump(){
-        velocity_Y=jumpy_Strength;
+
+    public float getX(){
+        return x;
     }
+
+    public boolean collidesWithFloor(int floorY) {
+        return y >= 1226;
+    }
+    public boolean collissionWithPipe(Pipe p){
+        return (p.getXCoordinate() < x - 50) && (x - 50 < p.getXCoordinate() + p.getPipeWidth()) && (y - 306 < p.getPipeHeight() || (y - 306 > (p.getPipeHeight() + p.getPipeGap())));
+    }
+
+
 
 
 }

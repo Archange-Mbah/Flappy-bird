@@ -5,6 +5,8 @@ import processing.core.PApplet;
 public class Bird {
     private float x, y;
     private float velocityY;
+
+    private boolean gotCoin=false;
     private final float gravity = 0.4f;
     private final float jumpStrength = -4.0f;
 
@@ -36,6 +38,12 @@ public class Bird {
     }
     public boolean collissionWithPipe(Pipe p){
         return (p.getXCoordinate() < x - 50) && (x - 50 < p.getXCoordinate() + p.getPipeWidth()) && (y - 306 < p.getPipeHeight() || (y - 306 > (p.getPipeHeight() + p.getPipeGap())));
+    }
+
+    public boolean collissionWithCoin(Coin c){
+
+        return((c.getX()-5 <=x && (c.getX()+5>=x)) && ((c.getY()-5 <= y) && c.getY()+5>=y));
+
     }
 
 

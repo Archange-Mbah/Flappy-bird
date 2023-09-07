@@ -3,6 +3,7 @@ package view;
 import ddf.minim.*;
 import logic.Bird;
 import logic.Pipe;
+import logic.Coin;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -11,11 +12,14 @@ import java.util.ArrayList;
 public class GameView extends PApplet {
     private Minim minim;
     private Bird bird;
+    private  ArrayList<Coin> coins=new ArrayList<Coin>();
     PImage background;
     private int scrolling;
     PImage gO;
     PImage b1;
     PImage b;
+
+    PImage c1;
 
     private ArrayList<Pipe> pipes = new ArrayList<Pipe>();
     int c = 0;
@@ -34,11 +38,15 @@ public boolean paused=false;
         bird = new Bird(100, 613); // Create the bird at a fixed X position and centered Y position
         pipes.add(new Pipe(30, 100, 400, 300));
         pipes.add(new Pipe(30, 120, 300, 600));
+        coins.add( new Coin(random(0,width),random(30,height)));
+        coins.add( new Coin(random(40,50),random(30,100)));
+
         background = loadImage("src/3.jpg");
         b = loadImage("src/p.jpg");
         gO = loadImage("src/2.jpg");
         scrolling = -3;
         b1 = loadImage("src/b1.jpg");
+        c1=loadImage("src/c2.jpg");
 
 
     }
@@ -51,6 +59,7 @@ public boolean paused=false;
                 } else game = 1;
                 if (game == 1) {
                     resetPipes();
+                    resetCOins();
                     if (c % 10 == 0) {
                         background(background);
 
@@ -58,8 +67,13 @@ public boolean paused=false;
                             fill(200);
                             pipe.setXCoordinate(pipe.getXCoordinate() + scrolling);
                             rect(pipe.getXCoordinate(), 0, pipe.getPipeWidth(), pipe.getPipeHeight());
-                            rect(pipe.getXCoordinate(), pipe.getPipeGap() + pipe.getPipeHeight(), pipe.getPipeWidth(), 1226 - (pipe.getPipeHeight() + pipe.getPipeGap()));
+                            rect(pipe.getXCoordinate(), pipe.getPipeGap() + pipe.getPipeHeight(), pipe.getPipeWidth(), 1226 - (-(pipe.getPipeHeight() + pipe.getPipeGap())));
 
+
+                            for (Coin coin : coins) {
+                                coin.setX(coin.getX()+scrolling); //
+                                image(c1, coin.getX() , coin.getY() );
+                            }
                         }
                         bird.update();
                         image(b, bird.getX() - 50, bird.getY() - height / 4);
@@ -110,6 +124,11 @@ public boolean paused=false;
                     if(pipe.getXCoordinate()+scrolling<=0) pipe.setXCoordinate(width);
                 }
     }
+    private void resetCOins(){
+        for(Coin coin:coins){
+            if(coin.getX()+scrolling<=0) coin.setX(width);
+        }
+    }
     private void resetGame() {
         // Reset bird position
         bird = new Bird(100, 613);
@@ -128,6 +147,7 @@ public boolean paused=false;
         game = 1;
     }
 }
+
 
 
 

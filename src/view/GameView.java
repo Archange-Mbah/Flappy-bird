@@ -21,7 +21,7 @@ public class GameView extends PApplet {
     int c = 0;
     int start = 0;
     int game=0;
-
+public boolean paused=false;
     public static void main(String[] args) {
         PApplet.main("view.GameView");
     }
@@ -44,38 +44,45 @@ public class GameView extends PApplet {
     }
 
     public void draw() {
+        if(!paused) {
+            if (start == 1) {
+                if (gameOver()) {
+                    game = 0;
+                } else game = 1;
+                if (game == 1) {
+                    resetPipes();
+                    if (c % 10 == 0) {
+                        background(background);
 
-        if (start == 1) {
-            if (gameOver()) {
-                game = 0;
-            } else game=1;
-            if(game==1){
-                resetPipes();
-                if (c % 10 == 0) {
-                    background(background);
+                        for (Pipe pipe : pipes) {
+                            fill(200);
+                            pipe.setXCoordinate(pipe.getXCoordinate() + scrolling);
+                            rect(pipe.getXCoordinate(), 0, pipe.getPipeWidth(), pipe.getPipeHeight());
+                            rect(pipe.getXCoordinate(), pipe.getPipeGap() + pipe.getPipeHeight(), pipe.getPipeWidth(), 1226 - (pipe.getPipeHeight() + pipe.getPipeGap()));
 
-                    for (Pipe pipe : pipes) {
-                        fill(200);
-                        pipe.setXCoordinate(pipe.getXCoordinate() + scrolling);
-                        rect(pipe.getXCoordinate(), 0, pipe.getPipeWidth(), pipe.getPipeHeight());
-                        rect(pipe.getXCoordinate(), pipe.getPipeGap() + pipe.getPipeHeight(), pipe.getPipeWidth(), 1226 - (pipe.getPipeHeight() + pipe.getPipeGap()));
-
+                        }
+                        bird.update();
+                        image(b, bird.getX() - 50, bird.getY() - height / 4);
                     }
-                    bird.update();
-                    image(b, bird.getX() - 50, bird.getY() - height / 4);
+                    c += 2;
+                } else {
+                    background(gO);
+                    fill(255);
+                    textSize(40);
+                    text(" Press s to restart", 40, 20);
                 }
-                c += 2;
             } else {
-                background(gO);
+                background(b1);
                 fill(255);
-                textSize(40);
-                text(" Press s to restart", 40,20);
+                textSize(50);
+                text("Press Enter to start", 50, 550);
             }
-        } else {
-            background(b1);
+        } else{
+            // Draw the paused screen or message
+            background(0); // You can replace this with your own pause screen
             fill(255);
-            textSize(50);
-            text("Press Enter to start", 50, 550);
+            textSize(40);
+            text("Game Paused", (float) width / 2 - 100, (float) height / 2);
         }
     }
 
@@ -86,6 +93,8 @@ public class GameView extends PApplet {
         if (key == 's' && game == 0) {
             start = 1;
             resetGame(); // Call the method to reset the game
+        } else if (key == 'p' || key == 'P') {
+            paused = !paused; // Toggle pause state when 'P' key is pressed
         }
     }
     public boolean gameOver() {
